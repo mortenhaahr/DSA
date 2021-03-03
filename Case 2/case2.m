@@ -4,15 +4,17 @@ clear;
 close all;
 %
 
-%% Opgave 1
+%% Opgave 1 a - FSK Generation
 fstart = 1000; %Hz
 fstop = 2000; %Hz
 symbolDuration = 0.5; %Seconds
-fsample = 100000; %Hz
+fsample = 20000; %Hz
 string = 'Hello World!';
 
 x = FSKgenerator(string, fstart, fstop, symbolDuration, fsample);
+%
 
+%% Opgave 1 b - Signal analysis
 %soundsc(fskSig, fsample);
 
 N = length(x);
@@ -45,7 +47,12 @@ for i = 1:length(string)
     charFreq = [charFreq double(string(i))*(fstop-fstart)/256+fstart]; % Calculates frequency of every letter in string and pushes it back in array
 end
 
-
 %
 
-%%
+%% Opgave 1 c - Spectrogram
+close all;
+n = fsample*symbolDuration;
+figure();
+spectrogram(x, blackman(n), 0, n, fsample,'yaxis');
+ylim([fstart/1000 fstop/1000]);
+%
