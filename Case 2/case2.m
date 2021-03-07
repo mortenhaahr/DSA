@@ -1,30 +1,31 @@
 %%
-clc;
-clear;
-close all;
+clf; clear; clc; close all;
+%set(0,'DefaultFigureWindowStyle','docked')
+set(0,'DefaultFigureWindowStyle','normal')
 %
 
 %% Opgave 1 a - FSK Generation
 fstart = 1000; %Hz
 fstop = 2000; %Hz
 symbolDuration = 0.5; %Seconds
-fsample = 20000; %Hz
+fsample = 44100; %Hz
 string = 'Hello World!';
 
 x = FSKgenerator(string, fstart, fstop, symbolDuration, fsample);
 %
 
 %% Opgave 1 b - Signal analysis
+close all;
 %soundsc(fskSig, fsample);
 
 N = length(x);
 t_axis = 0:1/fsample:N/fsample-1/fsample;
 figure();
-plot(t_axis, x, '*');
+plot(t_axis, x, '*-');
 title('FSK signal in time Domain at shifting point');
 xlabel('Time [s]');
 ylabel('Amplitude');
-xlim([0.495 0.505]);
+xlim([0.498 0.502]);
 
 X = fft(x);
 f_axis = 0:fsample/N:fsample-fsample/N;
