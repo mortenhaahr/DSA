@@ -16,8 +16,8 @@ x = FSKgenerator(string, fstart, fstop, symbolDuration, fsample);
 
 %% Opgave 1 b - Signal analysis
 close all;
-soundsc(x, fsample);
-%%
+%soundsc(fskSig, fsample);
+
 N = length(x);
 t_axis = 0:1/fsample:N/fsample-1/fsample;
 figure();
