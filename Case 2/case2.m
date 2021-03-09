@@ -119,7 +119,8 @@ end
 
 %% Opgave 2:
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal.wav');
+[x, fsample] = audioread('lydsignal_0.wav');
+x = x(:,1);
 
 
 % STFT Manual:
@@ -132,32 +133,87 @@ N_blocks = floor(length(x)/blockSamples);
 for i = 1 : blockSamples : N_blocks*blockSamples
     n_block = ceil(i/blockSamples); % Ceil because of 1-indexing
     x_block = x(i:i+blockSamples);
-    [symbol, symbolValue, freq] = FSKDecoder(x_block, fstart, fstop, fsample);
+    [symbol, symbolValue, freq] = FSKDecoder(x_block, fstart, fstop, fsample, 0);
     display("Symbol: " + num2str(symbol) + " Value: " + num2str(symbolValue) + " Freq: " + num2str(freq));
 end
 
-% Opgave C:
-% Vi beregner kun 500 bins, (bin_n_max - bin_n_min i Decoder), da vi ved
-% vores signal er herinde under.
-% Hvis ellers vores DFT var mere optimal, ville det være meget hurtigere
-% end at beregne det hele.
+
 
 %% Opgave 3:
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal.wav');
+[x, fsample] = audioread('lydsignal_0.wav'); % Change this for other values.
+% Note: Some distances are not nice because of noise in the start.
 
 x = x(1:24000); % Only looking at the first symbol
 
 N = length(x);
+Xabs = abs(fft(x));
+X_powerspectrum = (Xabs.*Xabs)/(N*N);
+X_powerdb = 10*log10(X_powerspectrum);
 
-Xabs = fft(abs(x));
-X_power = abs((Xabs.*Xabs)/(N*N));
-X_power = 10*log10(X_power);
+
+SNR_ours = mySNR(x);
+SNR_matlab = snr(x);
+
 
 f_axis = 0:fsample/N:fsample-fsample/N;
 figure();
-plot(f_axis,X_power,'*');
+plot(f_axis,X_powerdb,'*');
 title('DFT of FSK signal');
 xlabel('Frequency [Hz]');
 ylabel('Power [dB]');
-xlim([1000 2000]);
+
+%% Opgave 3 plots:
+clf; clear; clc; close all;
+[x0, fsample] = audioread('lydsignal_0.wav'); 
+[x50, fsample] = audioread('lydsignal_50cm.wav'); 
+[x100, fsample] = audioread('lydsignal_100cm.wav'); 
+[x150, fsample] = audioread('lydsignal_150cm.wav'); 
+[x200, fsample] = audioread('lydsignal_200cm.wav'); 
+[x250, fsample] = audioread('lydsignal_250cm.wav'); 
+
+x0 = x0(1:24000); % Only looking at the first symbol
+x50 = x50(1:24000); % Only looking at the first symbol
+x100 = x100(1:24000); % Only looking at the first symbol
+x150 = x150(1:24000); % Only looking at the first symbol
+x200 = x200(1:24000); % Only looking at the first symbol
+x250 = x250(1:24000); % Only looking at the first symbol
+
+
+
+snr0 = mySNR(x0);
+snr50 = mySNR(x50);
+snr100 = mySNR(x100);
+snr150 = mySNR(x150);
+snr200 = mySNR(x200);
+snr250 = mySNR(x250);
+
+snr_v = [snr0, snr50, snr100, snr150, snr200, snr250];
+
+N = 6;
+step = 50;
+x_axis = 0:step:N*step-step;
+figure()
+stem(x_axis,snr_v);
+title('SNR with distance');
+xlabel('Distance [cm]');
+ylabel('SNR [dB]');
+
+%% Opgave 4
+clf; clear; clc; close all;
+[x, fsample] = audioread('lydsignal_0.wav');
+x = x(:,1);
+
+% STFT Manual:
+fstart = 1000; %Hz
+fstop = 2000; %Hz
+symbolDuration = 0.5;
+
+blockSamples = fsample*symbolDuration;
+N_blocks = floor(length(x)/blockSamples);
+for i = 1 : blockSamples : N_blocks*blockSamples
+    n_block = ceil(i/blockSamples); % Ceil because of 1-indexing
+    x_block = x(i:i+blockSamples);
+    [symbol, symbolValue, freq] = FSKDecoder(x_block, fstart, fstop, fsample, blockSamples/2);
+    display("Symbol: " + num2str(symbol) + " Value: " + num2str(symbolValue) + " Freq: " + num2str(freq));
+end

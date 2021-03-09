@@ -1,9 +1,14 @@
-function [symbol, symbolValue, freq] = FSKDecoder(x, fstart, fstop, fsample)
+function [symbol, symbolValue, freq] = FSKDecoder(x, fstart, fstop, fsample, zerop)
+
+    x = [x; zeros(round(zerop), 1)];
 
     step = (fstop-fstart)/256;
     bin_res = fsample/length(x);
     bin_n_min = floor(fstart/bin_res);
     bin_n_max = floor(fstop/bin_res);
+    
+    whann = hann(length(x));
+    x = x.*whann;
     
     X = specifiedBinDFT(x, bin_n_min, bin_n_max);
     [bin_mag, highest_bin] = max(abs(X));
