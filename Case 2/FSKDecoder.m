@@ -7,7 +7,6 @@ function [string] = FSKDecoder(x, fstart, fstop, fsample, symbolDuration)
     freqArray = linspace(fstart, fstop, 256);
     stepSize = (fstop-fstart)/256;
     binIndices = round(freqArray/bin_res);
-    %binIndexes = freqArray/bin_res;
     wGauss = gausswin(length(x));
     x = x.*wGauss;
     
