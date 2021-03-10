@@ -119,25 +119,15 @@ end
 
 %% Opgave 2:
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal_0.3sec.wav');
+[x, fsample] = audioread('lydsignal_0.30sec.wav');
 x = x(:,1);
-
 
 % STFT Manual:
 fstart = 1000; %Hz
 fstop = 2000; %Hz
 symbolDuration = 0.3;
 
-blockSamples = fsample*symbolDuration;
-N_blocks = floor(length(x)/blockSamples);
-for i = 1 : blockSamples : N_blocks*blockSamples
-    n_block = ceil(i/blockSamples); % Ceil because of 1-indexing
-    x_block = x(i:i+blockSamples);
-    [symbol, symbolValue, freq] = FSKDecoder(x_block, fstart, fstop, fsample, 0);
-    display("Symbol: " + num2str(symbol) + " Value: " + num2str(symbolValue) + " Freq: " + num2str(freq));
-end
-
-
+decodedString = FSKDecoder(x, fstart, fstop, fsample, symbolDuration);
 
 %% Opgave 3:
 clf; clear; clc; close all;
@@ -201,11 +191,11 @@ ylabel('SNR [dB]');
 
 %% Opgave 4
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal_0.20sec.wav');
+[x, fsample] = audioread('lydsignal_0.wav');
 
 % STFT Manual:
 fstart = 1000; %Hz
 fstop = 2000; %Hz
-symbolDuration = 0.20;
+symbolDuration = 0.50;
 
-decodedString = FSKDecoderTest(x, fstart, fstop, fsample, symbolDuration);
+decodedString = FSKDecoder(x, fstart, fstop, fsample, symbolDuration);
