@@ -1,4 +1,4 @@
-function [symbol, symbolValue, freq] = FSKDecoder(x, fstart, fstop, fsample, zerop)
+  function [symbol, symbolValue, freq] = FSKDecoder(x, fstart, fstop, fsample, zerop)
 
     x = [x; zeros(round(zerop), 1)];
 
@@ -7,8 +7,8 @@ function [symbol, symbolValue, freq] = FSKDecoder(x, fstart, fstop, fsample, zer
     bin_n_min = floor(fstart/bin_res);
     bin_n_max = floor(fstop/bin_res);
     
-    whann = hann(length(x));
-    x = x.*whann;
+    wGauss = gausswin(length(x));
+    x = x.*wGauss;
     
     X = specifiedBinDFT(x, bin_n_min, bin_n_max);
     [bin_mag, highest_bin] = max(abs(X));
@@ -19,4 +19,3 @@ function [symbol, symbolValue, freq] = FSKDecoder(x, fstart, fstop, fsample, zer
     symbol = char(round(symbolValue));
     freq = bin_freq;
 end
-

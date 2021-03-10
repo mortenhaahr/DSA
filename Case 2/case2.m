@@ -7,7 +7,7 @@ set(0,'DefaultFigureWindowStyle','docked')
 %% Opgave 1 a - FSK Generation
 fstart = 1000; %Hz
 fstop = 2000; %Hz
-symbolDuration = 0.5; %Seconds
+symbolDuration = 0.25; %Seconds
 fsample = 44100; %Hz
 string = 'Hello World!';
 
@@ -119,14 +119,14 @@ end
 
 %% Opgave 2:
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal_0.wav');
+[x, fsample] = audioread('lydsignal_0.3sec.wav');
 x = x(:,1);
 
 
 % STFT Manual:
 fstart = 1000; %Hz
 fstop = 2000; %Hz
-symbolDuration = 0.5;
+symbolDuration = 0.3;
 
 blockSamples = fsample*symbolDuration;
 N_blocks = floor(length(x)/blockSamples);
@@ -201,19 +201,25 @@ ylabel('SNR [dB]');
 
 %% Opgave 4
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal_0.wav');
-x = x(:,1);
+[x, fsample] = audioread('lydsignal_0.2sec.wav');
 
 % STFT Manual:
 fstart = 1000; %Hz
-fstop = 2000; %Hz
-symbolDuration = 0.5;
+fstop = 5000; %Hz
+symbolDuration = 0.2;
 
-blockSamples = fsample*symbolDuration;
-N_blocks = floor(length(x)/blockSamples);
-for i = 1 : blockSamples : N_blocks*blockSamples
-    n_block = ceil(i/blockSamples); % Ceil because of 1-indexing
-    x_block = x(i:i+blockSamples);
-    [symbol, symbolValue, freq] = FSKDecoder(x_block, fstart, fstop, fsample, blockSamples/2);
-    display("Symbol: " + num2str(symbol) + " Value: " + num2str(symbolValue) + " Freq: " + num2str(freq));
-end
+%for i = 1 : blockSamples : N_blocks*blockSamples
+%    x_block = x(i:i+blockSamples);
+decodedString = FSKDecoderTest(x, fstart, fstop, fsample, symbolDuration);
+%    display("Symbol: " + num2str(symbol) + " Value: " + num2str(symbolValue) + " Freq: " + num2str(freq));
+%end
+% block = fsample*symbolDuration;
+% x = x(block:2*block);
+% N = length(x);
+% gaussWindow = gausswin(N);
+% x  = x.*gaussWindow;
+% X = abs(fft(x));
+% X = X(1:N/2);
+% f_axis = 0:fsample/N:(fsample/2-fsample/N);
+% figure();
+% plot(f_axis, X);
