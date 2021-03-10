@@ -6,8 +6,8 @@ set(0,'DefaultFigureWindowStyle','docked')
 
 %% Opgave 1 a - FSK Generation
 fstart = 1000; %Hz
-fstop = 2000; %Hz
-symbolDuration = 0.25; %Seconds
+fstop = 5000; %Hz
+symbolDuration = 0.20; %Seconds
 fsample = 44100; %Hz
 string = 'Hello World!';
 
@@ -60,14 +60,14 @@ ylim([fstart/1000 fstop/1000]);
 
 %% Mortens legehus
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal.wav');
+[x, fsample] = audioread('lydsignal_0.wav');
 %soundsc(x, fsample);
 x = x';
 
 
 % Test to see if X_ours calculates the same as X_matlab
 X_matlab = fft(x);
-X_ours = specifiedBinDFT(x,1, 50);
+%X_ours = specifiedBinDFT(x,1, 50);
 
 % delta = 0.1;
 % for i = 1:length(X_ours)
@@ -201,25 +201,11 @@ ylabel('SNR [dB]');
 
 %% Opgave 4
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal_0.2sec.wav');
+[x, fsample] = audioread('lydsignal_0.20sec.wav');
 
 % STFT Manual:
 fstart = 1000; %Hz
-fstop = 5000; %Hz
-symbolDuration = 0.2;
+fstop = 2000; %Hz
+symbolDuration = 0.20;
 
-%for i = 1 : blockSamples : N_blocks*blockSamples
-%    x_block = x(i:i+blockSamples);
 decodedString = FSKDecoderTest(x, fstart, fstop, fsample, symbolDuration);
-%    display("Symbol: " + num2str(symbol) + " Value: " + num2str(symbolValue) + " Freq: " + num2str(freq));
-%end
-% block = fsample*symbolDuration;
-% x = x(block:2*block);
-% N = length(x);
-% gaussWindow = gausswin(N);
-% x  = x.*gaussWindow;
-% X = abs(fft(x));
-% X = X(1:N/2);
-% f_axis = 0:fsample/N:(fsample/2-fsample/N);
-% figure();
-% plot(f_axis, X);
