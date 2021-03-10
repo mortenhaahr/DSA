@@ -191,11 +191,11 @@ ylabel('SNR [dB]');
 
 %% Opgave 4
 clf; clear; clc; close all;
-[x, fsample] = audioread('supertest.wav');
+[x, fsample] = audioread('lydsignal_0.wav');
 
 % STFT Manual:
 fstart = 1000; %Hz
-fstop = 4000; %Hz
-symbolDuration = 0.20;
+fstop = 2000; %Hz
+symbolDuration = 0.5;
 
 decodedString = FSKDecoder(x, fstart, fstop, fsample, symbolDuration);
