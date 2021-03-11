@@ -76,13 +76,13 @@ end
 
 %% Opgave 2:
 clf; clear; clc; close all;
-[x, fsample] = audioread('lydsignal_0.30sec.wav');
-%x = x(:,1);
+[x, fsample] = audioread('lydsignal_0.wav');
+x = x(:,1);
 
 % STFT Manual:
 fstart = 1000; %Hz
 fstop = 2000; %Hz
-symbolDuration = 0.3;
+symbolDuration = 0.5;
 
 decodedString = FSKDecoder(x, fstart, fstop, fsample, symbolDuration);
 

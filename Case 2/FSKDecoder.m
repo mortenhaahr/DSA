@@ -13,7 +13,7 @@ function [string] = FSKDecoder(x, fstart, fstop, fsample, symbolDuration)
         x_block = x_block.*wGauss; %Adding Gauss window function to reduce spectral leakage
         
         % Applying zero padding if needed:
-        if(length(x_block) < fsample/2) % If length < fs/2, apply zero padding
+        if(DFTBlockSize < fsample/2) % If length < fs/2, apply zero padding
             x_block = [x_block; zeros(fsample/2-length(x_block), 1)];
         end
         
