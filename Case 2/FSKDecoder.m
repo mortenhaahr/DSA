@@ -15,7 +15,7 @@ function [string] = FSKDecoder(x, fstart, fstop, fsample, symbolDuration)
         x_block = x(i:i+DFTBlockSize-1);
         
         for j = 1:length(binIndices) % For loop iterating over all possible frequency bins
-            X(j) = specifiedBinDFT(x_block, 0);
+            X(j) = specifiedBinDFT(x_block, binIndices(j));
         end
 
         [~, highest_bin] = max(abs(X)); %Determining the bin index of highest peak which is the frequency of the char
