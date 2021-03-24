@@ -1,0 +1,152 @@
+
+\documentclass[a4paper,onecolumn,oneside]{report}
+%Figurtekst ændret udseende
+\usepackage[font=small,labelfont=bf,listformat=simple]{caption}
+% Tillader H som float specifier
+\usepackage{float}
+% Til figurer
+\usepackage{graphicx}
+%Figurtekst ændret udseende
+\usepackage[font=small,labelfont=bf,listformat=simple]{caption}
+
+% Lange ligninger
+\usepackage{amsmath}
+
+% cdot automatisk når man skriver *
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}}
+
+%Edit Kapitler og sectioner
+\usepackage{tocloft}
+\usepackage{titlesec}
+    \setcounter{tocdepth}{5}
+    \setcounter{secnumdepth}{5}
+
+%Udseende på overskrifter
+\titleformat{\chapter}
+    {\Huge \bfseries}                          % format af tallet
+    {\thechapter} % \thechapter                % label 
+    {20pt}                                     % indhak mellem tal og skrift
+    {\Huge \bfseries \vspace{0pt}}             % skriftstørrelse og type
+
+\titleformat{\section}
+	{\Large \bfseries} 	                       % format af tallet
+	{\thesection}	                           % label
+	{5pt}             	                       % indhak mellem tal og skrift
+	{\Large \vspace{0pt}}			           % skriftstørrelse og type
+
+\titleformat{\subsection}
+	{\large \bfseries}                         % format af tallet
+	{\thesubsection}                           % label
+	{5pt}             			               % indhak mellem tal og skrift
+	{\large \vspace{0pt}}           		   % skriftstørrelse og type
+	
+\titleformat{\subsubsection}
+	{\normalfont \bfseries}                    % format
+	{}                                         % label
+	{0pt}             			               % indhak mellem tal og skrift
+	{\normalfont \bfseries \vspace{0pt}}       % skriftstørrelse og type
+
+
+%Fjerne start indhakket i alle textbokse.
+\parindent = 0pt
+\parskip = 1em
+
+\begin{document}
+
+\chapter{Opgave 2.2}
+Opgaven går ud på at finde systemfunktionen H(z) og opskriv differensligningen herudfra.
+
+Der tages udgangspunkt i et standard andenordens filter i z-domænet med konjugeret kompleks polpar:
+\begin{equation}
+    H(z)= \frac{(z-z_0)(z-\bar{z_0})}{(z-p_0)(z-\bar{p_0})}
+\end{equation}
+
+Parenteserne udvides ved at gange ind i dem:
+\begin{equation}
+    H(z)=\frac{z^2 - z*\bar{z_0} - z_0*z + z_0*\bar{z_0}}{z^2 - z*\bar{p_0} - p_0*z + p_0*\bar{p_0}} 
+\end{equation}
+
+Udtrykkene med $z_0*\bar{z_0}$ og $p_0*\bar{p_0}$ kan omskrives, da de er kompleks konjugeret, og den distributive regel anvendes:
+\begin{equation}
+    H(z)=\frac{z^2 - z*(z_0+\bar{z_0}) + |{z_0}^2|}{z^2 - z*(p_0 +\bar{p_0}) + |{p_0}^2|} 
+\end{equation}
+
+Ganger $z^{-2}$ på tæller og nævner:
+\begin{equation}
+    H(z)= \frac{1 - z^{-1}*(z_0+\bar{z_0}) + z^{-2}*|{z_0}^2|}{1 - z^{-1}*(p_0 +\bar{p_0}) + z^{-2}*|{p_0}^2|} 
+\end{equation}
+
+Omskrives til forhold mellem $Y(z)$ og $X(z)$:
+\begin{equation}
+    H(z)= \frac{Y(z)}{X(z)} = G * \frac{1 - z^{-1}*(z_0+\bar{z_0}) + z^{-2}*|{z_0}^2|}{1 - z^{-1}*(p_0 +\bar{p_0}) + z^{-2}*|{p_0}^2|} 
+\end{equation}
+
+Ganger X(z) på begge sider:
+\begin{equation}
+    Y(z) = X(z)  * \frac{1 - z^{-1}*(z_0+\bar{z_0}) + z^{-2}*|{z_0}^2|}{1 - z^{-1}*(p_0 +\bar{p_0}) + z^{-2}*|{p_0}^2|}
+\end{equation}
+
+Ganger nævneren på begge sider og udvider venstresiden:
+\begin{equation}
+    \begin{split}
+        Y(z) - Y(z)* z^{-1}*(p_0 +\bar{p_0}) + Y(z)*z^{-2}*|{p_0}^2| \\
+        = X(z) * (1 - z^{-1}*(z_0+\bar{z_0}) + z^{-2}*|{z_0}^2|)        
+    \end{split}
+\end{equation}
+
+Flytter de fleste led fra venstresiden. over på højresiden:
+\begin{equation}
+    \begin{split}
+    Y(z) = X(z) * (1 - z^{-1}*(z_0+\bar{z_0}) + z^{-2}*|{z_0}^2|) \\
+    + Y(z)* z^{-1}*(p_0 +\bar{p_0}) - Y(z)*z^{-2}*|{p_0}^2|
+    \end{split}
+\end{equation}
+
+Udvider X leddet:
+\begin{equation}
+    \begin{split}
+    Y(z) = X(z) - X(z) *z^{-1}*(z_0+\bar{z_0}) + X(z) * z^{-2}*|{z_0}^2|\\ + Y(z)* z^{-1}*(p_0 +\bar{p_0}) - Y(z)*z^{-2}*|{p_0}^2|
+    \end{split}
+\end{equation}
+
+Transformerer til diskrete tidsdomæne (differensligning):\footnote{Sætter X(z) og Y(z) = x(n) og y(n), samt $z^{-1}$ svarer til en forsinkelse på 1 sample.}
+\begin{equation}
+    \begin{split}
+    y(n) = x(n) - x(n-1) *(z_0+\bar{z_0}) \\
+    + x(n-2)*|{z_0}^2| + y(n-1)*(p_0 +\bar{p_0}) - y(n-2)*|{p_0}^2|
+    \end{split}
+\end{equation}
+
+
+Bruger komplekse regneregler til at simplificere $(z_0 +\bar{z_0})$ og $(p_0 +\bar{p_0})$:
+\begin{equation}
+    \begin{split}
+    y(n) = x(n) - x(n-1) *(2*\textrm{Re}(z_0)) + x(n-2)*|{z_0}^2| \\
+     + y(n-1)*(2*\textrm{Re}(p_0)) - y(n-2)*|{p_0}^2|
+    \end{split}
+\end{equation}
+
+Nu kan filterkoefficienter identificeres:
+\begin{equation}
+    \begin{split}
+        z_0  = \exp(0.1028*1j) = \cos(0.1028) + j*\sin(0.1028) \\
+        p_0 = 0.99*\exp(0.1028*1j) = 0.99*\cos(0.1028) + 0.99j*\sin(0.1028)\\
+        b_0 = 1\\
+        b_1 = -2*\textrm{Re}(z_0) = -2*\cos(0.1028) = -1.9894\\
+        b_2 = |{z_0}^2| = |(\cos(0.1028)+j*\sin(0.1028))^2| = 1 \\
+        a_0 = 1\\
+        a_1 = (-1)*2*\textrm{Re}(p_0) = -2*0.99*\cos(0.1028) = -1.9695\\
+        a_2 = (-1)* -|{p_0}^2| = |(0.99*\exp(0.1028*1j)^2)| = 0.9801
+    \end{split}
+    \label{eq:opgave2_f:done}
+\end{equation}
+
+\textbf{Bemærk:} at der ved $a_1$ og $a_2$ ganges -1 på. Dette skyldes at vi aflæser vores filterkoefficienter gennem differensligningen, mens de er på højresiden, men de skal aflæses fra venstresiden for at det passer.\\
+Hvis ikke vi havde (-1) foran, ville $a_0$ blive aflæst fra venstresiden og $a_1$ og $a_2$ fra højresiden, så nogle af vores koefficienter ville have omvendt fortegn.
+
+% Note: Koefficienterne stemmer overens med det vi får i Matlab
+
+\bibliographystyle{plain}
+\bibliography{references.bib}
+\end{document}
