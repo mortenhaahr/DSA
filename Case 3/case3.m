@@ -16,7 +16,7 @@ plot(t_axis, x, '*');
 title(['Sound signal in time domain zoomed in around ', num2str(zoom(1)), 's - ', num2str(zoom(2)), 's.'] );
 xlabel('Time [s]');
 ylabel('Amplitude');
-%xlim(zoom);
+xlim(zoom);
 
 X = fft(x);
 f_axis = 0:fs/N:fs-fs/N;
