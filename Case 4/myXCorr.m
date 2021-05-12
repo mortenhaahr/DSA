@@ -6,7 +6,7 @@ N_received = length(receivedSignal);
 N_chirp = length(chirpSignal);
 N_xCorr = N_received+N_chirp;
 
-receivedSigPadded = [zeros(1, N_received), chirpSignal];
+chirpSigPadded = [zeros(1, N_received), chirpSignal];
 R_offset = N_received;
 R = zeros(1, N_xCorr+N_received);
 lag = zeros(1, N_xCorr+N_received);
@@ -14,7 +14,7 @@ for i = -N_received:N_xCorr-1
     lag(i+N_received+1)= i;
     for j = 1:N_received
         if(N_received+j+i) <= N_xCorr
-            R(R_offset+1+i) = R(R_offset+1+i)+(receivedSignal(j)*receivedSigPadded(R_offset+j+i));
+            R(R_offset+1+i) = R(R_offset+1+i)+(receivedSignal(j)*chirpSigPadded(R_offset+j+i));
         end
     end 
 end
