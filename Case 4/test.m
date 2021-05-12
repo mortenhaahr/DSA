@@ -22,9 +22,9 @@ signal_200 = importdata("sonar_200_cm.dat");
 % legend("50", "100", "150", "200");
 % 
 figure;
-[c, lags] = xcorr(sweep_sig, signal_200);
+[c, lags] = xcorr(signal_200, sweep_sig);
 stem(lags,c);
 hold on;
-[d, lag] = myXCorr(sweep_sig, signal_200');
+[d, lag] = myXCorr(signal_200', sweep_sig);
 stem(lag, d);
 legend("xcorr", "myXCorr");
