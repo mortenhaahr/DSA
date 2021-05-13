@@ -13,18 +13,18 @@ signal_100 = importdata("sonar_100_cm.dat");
 signal_150 = importdata("sonar_150_cm.dat");
 signal_200 = importdata("sonar_200_cm.dat");
 
-% figure;
-% plot(signal_50);
-% hold on;
-% plot(signal_100);
-% plot(signal_150);
-% plot(signal_200);
-% legend("50", "100", "150", "200");
-% 
+figure;
+plot(signal_50);
+hold on;
+plot(signal_100);
+plot(signal_150);
+plot(signal_200);
+legend("50", "100", "150", "200");
+
 figure;
 [c, lags] = xcorr(signal_200, sweep_sig);
 stem(lags,c);
 hold on;
-[d, lag] = myXCorr(signal_200', sweep_sig);
-stem(lag, d);
+d = myXCorr(signal_200', sweep_sig);
+stem(d);
 legend("xcorr", "myXCorr");

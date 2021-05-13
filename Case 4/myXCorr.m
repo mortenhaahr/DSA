@@ -18,3 +18,20 @@ for i = -N_chirp:N_xCorr-1
         end
     end 
 end
+
+% function z = myXCorr(x1, x2)
+%     N_x1 = length(x1);
+%     N_x2 = length(x2);
+%     N_xCorr = N_x1+N_x2-1;
+%     z = zeros(1, N_xCorr);
+%     
+%     for i = 1:N_xCorr
+%         z(i) = 0;
+%         for j = flip(1:N_x2)
+%             i_x1 = i+j - N_x2;
+%             if i_x1 > 0 && i_x1 < N_x1
+%                 z(i)=z(i)+x1(i_x1)*x2(j);
+%             end
+%         end
+%     end
+% end

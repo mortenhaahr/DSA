@@ -46,7 +46,7 @@ signal_200 = importdata("sonar_200_cm.dat");
 
 mean_factor = abs(mean(signal_50))/abs(mean(signal_0));
 
-signal_0 = signal_0.*mean_factor; % Forstærk teoretisk output signal, så det ligner de andre
+signal_0_amplified = signal_0.*mean_factor; % Forstærk teoretisk output signal, så det ligner de andre
 
 % Tidsdomæne
 
@@ -54,7 +54,7 @@ receive_length = 4800;
 t_axis = 0:1/fs:receive_length/fs-1/fs;
 
 figure();
-plot(t_axis, signal_0, '*-');
+plot(t_axis, signal_0_amplified, '*-');
 hold on;
 plot(t_axis, signal_50, '*-');
 plot(t_axis, signal_100, '*-');
@@ -107,7 +107,7 @@ legend('200 cm');
 
 % Frekvensdomæne
 
-Signal_0 = fft(signal_0);
+Signal_0 = fft(signal_0_amplified);
 Signal_50 = fft(signal_50);
 Signal_100 = fft(signal_100);
 Signal_150 = fft(signal_150);
@@ -117,7 +117,7 @@ f_axis = 0:fs/receive_length:fs-fs/receive_length;
 figure();
 plot(f_axis, abs(Signal_0), '*-');
 hold on;
-plot(f_axis, abs(Signal_50), '*-');
+%plot(f_axis, abs(Signal_50), '*-');
 %plot(f_axis, abs(Signal_100), '*-');
 %plot(f_axis, abs(Signal_150), '*-');
 %plot(f_axis, abs(Signal_200), '*-');
@@ -126,3 +126,32 @@ title('Chirp signal in frequency domain');
 xlabel('Frequency [Hz]');
 ylabel('Magnitude');
 legend('output signal', '50 cm', '100 cm', '150 cm', '200 cm');
+
+% Krydskorrelation
+[crossCorr_50, lag_50] = myXCorr(signal_50', signal_0);
+[crossCorr_100, lag_100] = myXCorr(signal_100', signal_0);
+[crossCorr_150, lag_150] = myXCorr(signal_150', signal_0);
+[crossCorr_200, lag_200] = myXCorr(signal_200', signal_0);
+[crossCorr, lag] = xcorr(signal_50, signal_0); % Anvendes til at sammenligne matlabs xcorr med myXCorr
+
+tau_axis = lag_200/fs; % in seconds
+[~, tau_diff_samples] = max(crossCorr_200);
+tau_diff_seconds = tau_axis(tau_diff_samples);
+distInM = (tau_diff_seconds*343);
+
+figure;
+stem(lag_50, crossCorr_50);
+%plot(tau, crossCorr_50);
+hold on;
+stem(lag, crossCorr);
+legend("myCrossCorr", "xcorr");
+hold off;
+
+figure;
+stem(lag_100, crossCorr_100);
+figure;
+stem(lag_150, crossCorr_150);
+figure;
+stem(lag_200, crossCorr_200);
+
+
