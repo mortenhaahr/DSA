@@ -11,16 +11,16 @@ t = 0:1/fs:sweep_length/fs-1/fs;
 t_last = t(sweep_length);
 sweep_sig = chirp(t, fstart, t_last, fstop);
 
-figure();
-plot(t, sweep_sig, '*-');
-title(['Chirp signal in time domain']);
-xlabel('Time [s]');
-ylabel('Amplitude');
+% figure();
+% plot(t, sweep_sig, '*-');
+% title(['Chirp signal in time domain']);
+% xlabel('Time [s]');
+% ylabel('Amplitude');
 
 
 % Eksempel på skrivning af array til fil, som kan læses ind i CrossCore
 powShort = 2^15; % Samme som shift med 15 bits
-fid=fopen('sweep_sig_500_s.dat', 'w');
+fid=fopen('sweep_sig_100_s.dat', 'w');
 for i=1:length(sweep_sig)-1
     fprintf(fid, '%d,\n', toRealNumber(sweep_sig(i), powShort)); 
 end

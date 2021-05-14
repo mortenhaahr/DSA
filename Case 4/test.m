@@ -25,6 +25,6 @@ figure;
 [c, lags] = xcorr(signal_200, sweep_sig);
 stem(lags,c);
 hold on;
-d = myXCorr(signal_200', sweep_sig);
-stem(d);
+[d, lag] = myXCorr(signal_200', sweep_sig);
+stem(lag, d);
 legend("xcorr", "myXCorr");
